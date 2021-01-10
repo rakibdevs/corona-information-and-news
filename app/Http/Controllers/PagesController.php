@@ -6,12 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\Collecction;
 use App\Models\Expense;
 use App\Models\Gallery;
-use DB, stdClass;
+use RakibDevs\Covid19\Covid19;
+use DB, stdClass, Cache;
 
 class PagesController extends Controller
 {
     public function index()
     {
+
+        $d =  new Covid19;
+        $covid_summary = Cache::remember('covid_summary',600, function () use ($d) {
+            return $d->getSummary();
+        });
+
+        //dd($covid_summary);
+
+
     	$collections = Collecction::select(
                             DB::raw('sum(amount) as amount'),
                             DB::raw('CAST(created_at AS DATE) as date')
@@ -47,6 +57,6 @@ class PagesController extends Controller
 
         $gallery = Gallery::orderBy('id','DESC')->take(6)->get();
 
-        return view('index', compact('graph','gallery'));
+        return view('index', compact('graph','gallery','covid_summary'));
     }
 }
