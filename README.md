@@ -23,3 +23,9 @@ php artisan migrate
 
 php artisan serve
 ```
+
+
+### Credits
+- Start Bootstrap - Creative v6.0.1
+- Freepik
+- Covid-19 API
